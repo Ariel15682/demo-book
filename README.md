@@ -34,12 +34,9 @@ comentado, el fichero application.properties debe estar configurado;
 spring.sql.init.mode=never y spring.jpa.hibernate.ddl-auto=update para que no de
 error en cada inicio al intentar crear el esquema de BD cada vez estando ya creado.
 5. Configuracion de Swagger:
-* clase SwaggerConfig: @EnableSwagger2; Probada en version 2.55 Spring (OK), en
-version 2.7 con javax.persistence (FAIL), 3.1 con Jakarta.persistence (FAIL)
-* Dependencias:
+Dependencias:
 pom.xml
 
-Con esta unica:
 ````xml
         <dependency>
             <groupId>io.springfox</groupId>
@@ -47,21 +44,7 @@ Con esta unica:
             <version>3.0.0</version>
         </dependency>
 ````
-Con estas otras:
-````xml
-<dependencies> 
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.9.2</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.9.2</version>
-        </dependency>
-</dependencies>   
-````
+
 Tener en cuenta que frameworks (Spring/jersey) y que versiones se estan utilizando
 al momento de cargar las dependencias. Estas dependencias cargan otras que son 
 necesarias como swagger annotation, models, core, jaxrs(x)...

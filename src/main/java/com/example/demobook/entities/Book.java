@@ -2,7 +2,8 @@ package com.example.demobook.entities;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
