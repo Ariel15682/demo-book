@@ -1,4 +1,4 @@
-package controllers;
+package com.example.demobook.controllers;
 
 import com.example.demobook.entities.Book;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,7 +53,7 @@ public class BookControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
-    @Test
+
         /*
          * metodo crear:
          * preparar las cabeceras
@@ -61,6 +61,7 @@ public class BookControllerTest {
          * preparar la peticion
          * ejecutar la peticion pidiendole que te devuelva datos de tipo libro
          */
+        @Test
     void create() {
         HttpHeaders headers  = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
