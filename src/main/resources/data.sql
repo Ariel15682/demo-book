@@ -1,0 +1,3 @@
+--INSERT INTO BOOKS (TITLE, AUTHOR, LANG, PAGES, PRICE, RELEASEDATE, ONLINE, EDITORIAL, GENDER )
+--VALUES ("Java 17 Programación Avanzada ", "José María Vegas Gertrudix", "Castellano", 526, 32.90,
+--2020-12-21, true, "RA-MA", "IT");
