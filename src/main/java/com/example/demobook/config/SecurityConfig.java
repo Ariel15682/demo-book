@@ -1,14 +1,20 @@
 package com.example.demobook.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.firewall.HttpFirewall;
-import org.springframework.security.web.firewall.StrictHttpFirewall;
+//import org.springframework.security.web.firewall.HttpFirewall;
+//import org.springframework.security.web.firewall.StrictHttpFirewall;
 
+@Configuration
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -26,12 +32,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic(); // method chaining concatenacion de metodo: obj.metodo1().metodo2()
     }
 
+
 //    @Bean
 //    public HttpFirewall looseHttpFirewall(){
 //        StrictHttpFirewall firewall = new StrictHttpFirewall();
 //        firewall.setAllowSemicolon(true); //permite punto y coma
 //        return firewall;
 //    }
+
+    // Ignora la seguridad en el perfil de test
+    @Bean
+    @Profile("test")
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                .antMatchers("/**");
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
