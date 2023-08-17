@@ -15,12 +15,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //super.configure(http); // esto que pega no es necesario, vamos a sobreescribir
-        http.authorizeRequests()
+        http
+                .authorizeRequests()
                 //.antMatchers("/api/books").permitAll() // solo permite el entrypoint especificado sin logearse
                 //.antMatchers("/api/books").hasRole("USER")
                 //.antMatchers("").hasAnyAuthority()
