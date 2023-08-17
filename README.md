@@ -50,10 +50,92 @@ al momento de cargar las dependencias. Estas dependencias cargan otras que son
 necesarias como swagger annotation, models, core, jaxrs(x)...
 
 6. Se crea clase test para el controlador de libro (BookControllerTest)
-7. En esta aplicacion se utilizaron anotaciones propias de Test como por ej. 
-@DisplayName; para dar un nombre elegido a los test, de Hibernate como @Table y 
-@Column; para el nombre de las tablas y columnas, de SpringFox/Swagger como
-ser @ApiOperation, @ApiParam, @ApiModel, @ApiModelProperty.
-Se utilizo tambien @GeneratedValue; para generar claves primaria (Id), Objetos
-Optionals, ResponseEntity para manejar las respuestas HTTP, la interfaz Logger
- 
+
+En esta aplicacion se utilizo: 
+* Testing: @DisplayName; para dar un nombre custom a los test. 
+* Hibernate; @Table y @Column; para el nombre de las tablas y columnas.
+* SpringFox/Swagger: @GeneratedValue; para generar claves primaria (Id), Objetos
+  Optionals, ResponseEntity para manejar las respuestas HTTP, la interfaz Logger.
+  @ApiOperation, @ApiParam, @ApiModel, @ApiModelProperty.
+
+## Spring Security
+Se implementa Spring Boot starter Security en su version 3.1 con Spring Boot 2.5.5. 
+Encontramos que en versiones de Spring Boot posteriores a 3 algunas clases fueron 
+deprecadas.
+
+### Novedades:
+La clase abstracta WebSecurityConfigurerAdapter, de la cual extendia nuestra clase 
+de configuracion de la seguridad (WebSecurityConfig) fue deprecada. En consecuencia,
+si utilizaramos una version de Spring Boot mayor nuestra clase de configuracion ya 
+no extiende de ninguna otra clase, el metodo AuthenticationManager que gestiona la 
+seguridad y roles de los usuarios ya no no es de tipo "void" sino que retorna un valor
+de ese tipo "AuthenticationManager".
+Lo mismo para el metodo de configuracion de HttpSecurity, ya no es de tipo void sino que
+retorna un objeto de tipo "SecurityFilterChain". Esta ultima nos provee de un sistema 
+de "login" para restringir el acceso a algun area de la aplicacion sin antes autenticarse.
+Al inicio de la aplicacion Spring  genera el password en consola de forma "random"
+(ej. cc5db156-2789-4c72-8ab3-f2bcec483b49) el usuario siempre es "user". 
+Las credenciales se pueden "customizar"; 
+incluir en el fichero:
+
+main/resources/application.properties
+
+```` properties
+# Reemplaza usuario y contraseña que otorga Spring por consola al iniciar la aplicacion
+spring.security.user.name=ariel
+spring.security.user.password=12345
+
+# Granted roles for the default user name.
+spring.security.user.roles=
+````
+La otra forma de gestionar usuarios y roles es con AuthenticationManager en la clase 
+de configuracion como codigo.
+
+Se implemento tambien un metodo para ignorar la seguridad en los test;
+````
+    @Bean
+    @Profile("test")
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                .antMatchers("/**");
+    }
+````
+Acompañado de la anotacion ``@ActiveProfiles("test")`` en la clase de testeo.
+
+Se implemento ademas BCryptPasswordEncoder para cifrar la contraseña.
+
+---
+### Actualizacion
+Al momento en que me encuentro, Agosto de 2023, se deprecaron los metodos
+authorizeRequests() y antMatchers() de la clase HttpSecurity de Spring Security, 
+utilizados en el metodo de configuracion que gestiona la seguridad Http, dentro de
+nuestra clase WebSecurityConfig. Dentro del paquete "config" se adjunta un fichero
+WebSecurity con toda la clase de seguridad actualizada para funcionar ya no con la
+dependencia de Spring Boot Starter Security V3 sino inyectando las siguientes 
+dependencias de Spring Security en su version actual (6.1):
+
+````xml
+<dependencies>
+    <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-core</artifactId>
+        <version>6.1.0</version>
+    </dependency>
+    
+    <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-web</artifactId>
+        <version>6.1.0</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-config</artifactId>
+        <version>6.1.0</version>
+    </dependency>
+
+</dependencies>
+````
