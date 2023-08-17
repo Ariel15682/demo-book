@@ -58,7 +58,8 @@ public class BookController {
     // Opcion 3
     //devolviendo una @ResponseEntity (notFound()-404) y no "vacio" status ok (200)
     @GetMapping("/api/books/{id}")
-    @ApiOperation("Buscar un libro por clave primaria id Long") // descrpcion para el metodo en swagger
+    // Descrpcion para el metodo en swagger
+    @ApiOperation("Buscar un libro por clave primaria id Long")
     // @ApiParam descripcion del parametro id
     public ResponseEntity<Book> findOneById(@ApiParam("Clave primaria tipo Long") @PathVariable Long id){
 
@@ -77,7 +78,6 @@ public class BookController {
 
 
     // Crear/salvar un nuevo libro en base de datos
-
     @PostMapping("/api/books")
     public ResponseEntity<Book> create(@RequestBody Book book, @RequestHeader HttpHeaders headers){
         System.out.println(headers.get("User-Agent"));
@@ -96,13 +96,13 @@ public class BookController {
     /* Actualizar un libro existente en base de datos
      * Lo normal aqui es que se recupere el objeto y mediante setter que se hagan las modificaciones de los parametros
      * requeridos/permitidos y luego se salvan los cambios, pero no el objeto libro. Lo habitual es que esto no lo haga
-     * la clase controller la que llame al repositorio sino una clase intermedia
+     * la clase controller o la que llama al repositorio sino una clase intermedia
      */
     @PutMapping("/api/books")
-    // El id debe ser distinto a nulo obligatoriamente
+    // El id debe ser distinto a nulo para que sea una modificacion/update
     public ResponseEntity<Book> update(@RequestBody Book book){
         if(book.getId() == null){
-            // si no existe id quiere decir que es una creacion
+            // Si no existe id quiere decir que es una creacion
             log.warn("Trying to update a non existent book");
             return ResponseEntity.badRequest().build();
         }
@@ -129,11 +129,11 @@ public class BookController {
     }
 
     // Borrar todos los libros en base de datos
-    @ApiIgnore //con esta anotacion escondemos el metodo de la api swagger
+    @ApiIgnore // Con esta anotacion escondemos el metodo de la api swagger
     @DeleteMapping("/api/books")
     public ResponseEntity<Book> deleteAll(){
         log.info("REST Request for delete all books"); // log.debug
-        // se podria hacer un count y si da mas de cero borra y sino no
+        // Se podria hacer un count y si da mas de cero borra y sino no
         bookRepository.deleteAll();
         return ResponseEntity.noContent().build();
     }
