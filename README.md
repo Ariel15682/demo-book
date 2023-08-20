@@ -116,10 +116,9 @@ todos de la clase HttpSecurity con la dependencia Spring Boot starter Security y
 utilizados en el metodo de configuracion que gestiona la seguridad Http, dentro de
 nuestra clase WebSecurityConfig. 
 
-Dentro del paquete "config" se adjunta un fichero WebSecurity actualizada pero muy similar
-con una de las posibles soluciones sencillas, ya no con la dependencia de Spring Boot Starter 
-Security v3.1 sino con las siguientes dependencias de Spring Security en su version
-actual (6.1):
+Dentro del paquete "config" se adjunta un fichero WebSecurity actualizada para Spring Boot
+2.7, muy similar a su version anterior. Las dependencias utilizadas son Spring Boot Starter
+Security o las que se detallan abajo.
 
 ````xml
 <dependencies>
@@ -146,3 +145,5 @@ actual (6.1):
 
 </dependencies>
 ````
+
+Se adjunta al pie del fichero WebSecurity.txt la actualizacion para Spring Boot 3.1
