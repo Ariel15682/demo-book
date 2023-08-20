@@ -65,11 +65,11 @@ deprecadas.
 
 ### Novedades:
 La clase abstracta WebSecurityConfigurerAdapter, de la cual extendia nuestra clase 
-de configuracion de la seguridad (WebSecurityConfig) fue deprecada. En consecuencia,
-si utilizaramos una version de Spring Boot mayor nuestra clase de configuracion ya 
-no extiende de ninguna otra clase, el metodo AuthenticationManager que gestiona la 
-seguridad y roles de los usuarios ya no no es de tipo "void" sino que retorna un valor
-de ese tipo "AuthenticationManager".
+de configuracion de la seguridad (WebSecurityConfig) en SpringBoot 2.5 fue deprecada en 
+Spring Boot 2.7. En consecuencia, si utilizaramos esa version de Spring Boot nuestra 
+clase de configuracion ya no extiende de ninguna otra clase, el metodo 
+AuthenticationManager() que gestiona la seguridad y roles de los usuarios ya no es 
+de tipo "void" sino que retorna un valor de ese tipo "AuthenticationManager". 
 Lo mismo para el metodo de configuracion de HttpSecurity, ya no es de tipo void sino que
 retorna un objeto de tipo "SecurityFilterChain". Esta ultima nos provee de un sistema 
 de "login" para restringir el acceso a algun area de la aplicacion sin antes autenticarse.
@@ -106,13 +106,20 @@ Se implemento ademas BCryptPasswordEncoder para cifrar la contraseña.
 
 ---
 ### Actualizacion
-Al momento en que me encuentro, Agosto de 2023, se deprecaron los metodos
-authorizeRequests() y antMatchers() de la clase HttpSecurity de Spring Security, 
+Al momento en que me encuentro, Agosto de 2023, con Spring Boot 3.1 se deprecaron y en
+otros casos cambio la implementacion de los metodos; authorizeRequests() por 
+authorizeHttpRequests(Customizer <AutorizationManagerRequestMatcherRegistry> 
+authorizeHttpRequestCustomizer), antMatchers() por requestMatchers(), formLogin() por
+formLogin(Customizer<FormLoginConfigurer<HttpSecurity>> formLoginCustomizer) y 
+httpBasic() por httpBasic(Customizer<HttpBasicConfigurer<HttpSecurity>> httpBasicCustomizer)
+todos de la clase HttpSecurity con la dependencia Spring Boot starter Security y
 utilizados en el metodo de configuracion que gestiona la seguridad Http, dentro de
-nuestra clase WebSecurityConfig. Dentro del paquete "config" se adjunta un fichero
-WebSecurity con toda la clase de seguridad actualizada para funcionar ya no con la
-dependencia de Spring Boot Starter Security V3 sino inyectando las siguientes 
-dependencias de Spring Security en su version actual (6.1):
+nuestra clase WebSecurityConfig. 
+
+Dentro del paquete "config" se adjunta un fichero WebSecurity actualizada pero muy similar
+con una de las posibles soluciones sencillas, ya no con la dependencia de Spring Boot Starter 
+Security v3.1 sino con las siguientes dependencias de Spring Security en su version
+actual (6.1):
 
 ````xml
 <dependencies>
